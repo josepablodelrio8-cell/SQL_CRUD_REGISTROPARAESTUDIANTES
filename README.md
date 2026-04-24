@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:3F51B5,100:1a237e&height=160&section=header&text=App05CRUD&fontSize=42&fontColor=ffffff&fontAlignY=38&desc=Gestión%20de%20Estudiantes%20·%20SQLite%20·%20Android&descAlignY=58&descSize=15&animation=fadeIn"/>
-
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
