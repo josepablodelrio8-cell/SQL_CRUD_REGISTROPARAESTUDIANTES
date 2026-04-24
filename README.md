@@ -12,21 +12,6 @@
 
 ---
 
-## 📱 Demo
-
-<!--
-  💡 CÓMO AGREGAR TU DEMO AQUÍ:
-  1. Abre Android Studio → corre el emulador
-  2. Graba la pantalla: botón de cámara en la barra del emulador
-  3. Convierte el video a GIF en https://ezgif.com/video-to-gif (máx. 8 segundos)
-  4. Abre este README en GitHub → botón ✏️ Edit
-  5. Arrastra y suelta el GIF dentro del editor
-  6. GitHub genera una URL automática → reemplaza el placeholder de abajo
--->
-
-| Insertar | Ver lista | Editar | Eliminar |
-|----------|-----------|--------|----------|
-| ![insert](https://via.placeholder.com/180x320/3F51B5/ffffff?text=GIF+aqui) | ![list](https://via.placeholder.com/180x320/3F51B5/ffffff?text=GIF+aqui) | ![edit](https://via.placeholder.com/180x320/3F51B5/ffffff?text=GIF+aqui) | ![delete](https://via.placeholder.com/180x320/3F51B5/ffffff?text=GIF+aqui) |
 
 ---
 
