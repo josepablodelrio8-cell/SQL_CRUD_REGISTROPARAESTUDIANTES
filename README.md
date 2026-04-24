@@ -151,7 +151,7 @@ Base de datos local: `student.db` · Versión: `2`
 
 | Pantalla Principal | Lista de Estudiantes | Dialogo de Edición |
 |---|---|---|
-| <img width="387" height="851" alt="Pantalla Principal" src="https://github.com/user-attachments/assets/27af7d5a-44c8-4828-814a-d593028973e2" /> | <img width="384" height="870" alt="Lista de Estudiantes" src="https://github.com/user-attachments/assets/16d02a0d-8df1-48fe-b323-56f58f452b62" /> | <img width="387" height="851" alt="Dialogo de Edición" src="TU-TERCERA-URL-AQUI" /> |
+|<img width="406" height="701" alt="image" src="https://github.com/user-attachments/assets/18130124-f928-4bb1-83d6-3a56c7c225b8" /> |<img width="387" height="851" alt="Pantalla Principal" src="https://github.com/user-attachments/assets/27af7d5a-44c8-4828-814a-d593028973e2" />| <img width="384" height="870" alt="Lista de Estudiantes" src="https://github.com/user-attachments/assets/16d02a0d-8df1-48fe-b323-56f58f452b62" />  |
 
 ---
 
