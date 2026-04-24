@@ -1,0 +1,110 @@
+package com.example.app05crud
+
+import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var txtName: EditText
+    private lateinit var txtEmail: EditText
+    private lateinit var btnAdd: Button
+    private lateinit var btnView: Button
+    private lateinit var listView: ListView
+    private lateinit var tvCounter: TextView
+    private lateinit var adminSQLiteOpenHelper: AdminSQLiteOpenHelper
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        initView()
+    }
+
+    private fun initView() {
+        txtName   = findViewById(R.id.txtName)
+        txtEmail  = findViewById(R.id.txtEmail)
+        btnAdd    = findViewById(R.id.btnAdd)
+        btnView   = findViewById(R.id.btnView)
+        listView  = findViewById(R.id.listView)
+        tvCounter = findViewById(R.id.tvCounter)
+        adminSQLiteOpenHelper = AdminSQLiteOpenHelper(this)
+
+        btnAdd.setOnClickListener  { addStudent() }
+        btnView.setOnClickListener { getStudent() }
+    }
+
+    private fun clearEdit() {
+        txtName.setText("")
+        txtEmail.setText("")
+        txtName.requestFocus()
+    }
+
+    private fun getStudent() {
+        val stdList = adminSQLiteOpenHelper.getAllStudent()
+        Log.e("show", "${stdList.size}")
+
+
+            // ✅ ACTUALIZADO: ahora StudentAdapter recibe también el callback onUpdate
+            val adapter = StudentAdapter(
+                this, stdList,
+                onDelete = { std ->
+                    // Cuando presionan Eliminar en una fila:
+                    val result = adminSQLiteOpenHelper.deleteStudent(std.id)
+                    if (result > 0) {
+                        Toast.makeText(this, "${std.name} eliminado", Toast.LENGTH_SHORT).show()
+                        getStudent() // refresca la lista
+                    }
+                },
+                onUpdate = { std ->
+                    // ✅ NUEVO: Cuando el usuario guarda en el diálogo de edición:
+                    val result = adminSQLiteOpenHelper.updateStudent(std)
+                    if (result > 0) {
+                        Toast.makeText(this, "${std.name} actualizado", Toast.LENGTH_SHORT).show()
+                        getStudent() // refresca la lista
+                    }
+                }
+            )
+            listView.adapter = adapter
+
+            if (stdList.isEmpty()) {
+                tvCounter.text = "Sin registros"
+            } else {
+                tvCounter.text = "Total: ${stdList.size} estudiante(s)  |  Último: E ${stdList.size} — ${stdList.last().name}"
+            }
+    }
+
+    private fun addStudent() {
+        val name  = txtName.text.toString()
+        val email = txtEmail.text.toString()
+
+        if (name.isEmpty() || email.isEmpty()) {
+            Toast.makeText(this,
+                "Por favor no deje los campos en blanco",
+                Toast.LENGTH_LONG).show()
+        } else {
+            val std    = StudentModel(name = name, email = email)
+            val status = adminSQLiteOpenHelper.insertStudent(std)
+            if (status > -1) {
+                Toast.makeText(this,
+                    "Estudiante añadido correctamente",
+                    Toast.LENGTH_SHORT).show()
+                clearEdit()
+                getStudent()
+            }
+        }
+    }
+}

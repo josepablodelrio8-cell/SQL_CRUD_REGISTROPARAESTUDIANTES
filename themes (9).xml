@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="#FFFFFF"
+    android:padding="10dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="2dp"
+    android:layout_marginBottom="6dp">
+
+    <!-- Avatar circular con iniciales -->
+    <TextView
+        android:id="@+id/tvAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="@drawable/bg_avatar"
+        android:textColor="#3F51B5"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="10dp"
+        android:text="" />
+
+    <!-- Info: nombre y email -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSubItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#9E9E9E"
+            android:textSize="11sp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1" />
+    </LinearLayout>
+
+    <!-- Botón Editar -->
+    <Button
+        android:id="@+id/btnModificar"
+        android:layout_width="109dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="6dp"
+        android:backgroundTint="#FFF3E0"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="EDITAR"
+        android:textColor="#E65100"
+        android:textSize="10sp" />
+
+    <!-- Botón Eliminar -->
+    <Button
+        android:id="@+id/btnEliminar"
+        android:layout_width="106dp"
+        android:layout_height="32dp"
+        android:backgroundTint="#FFEBEE"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="ELIMINAR"
+        android:textColor="#C62828"
+        android:textSize="10sp" />
+
+</LinearLayout>

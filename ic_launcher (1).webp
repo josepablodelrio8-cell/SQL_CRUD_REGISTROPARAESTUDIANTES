@@ -1,0 +1,89 @@
+package com.example.app05crud
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+
+class AdminSQLiteOpenHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
+    override fun onCreate(db: SQLiteDatabase?) {
+        val createTblStudent = ("CREATE TABLE " + TBL_STUDENT + "("
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + NAME + " TEXT,"
+                + EMAIL + " TEXT"
+                + ")")
+        db?.execSQL(createTblStudent)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
+        db!!.execSQL("DROP TABLE IF EXISTS $TBL_STUDENT")
+        onCreate(db)
+    }
+
+    companion object {
+        private const val DATABASE_VERSION = 2
+        private const val DATABASE_NAME = "student.db"
+        private const val TBL_STUDENT = "tbl_student"
+        private const val ID = "id"
+        private const val NAME = "name"
+        private const val EMAIL = "email"
+    }
+
+    fun insertStudent(std: StudentModel): Long {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(NAME, std.name)
+        contentValues.put(EMAIL, std.email)
+        val success = db.insert(TBL_STUDENT, null, contentValues)
+        db.close()
+        return success
+    }
+
+
+    // ✅ NUEVO: elimina un estudiante por su id
+    fun deleteStudent(id: Int): Int {
+        val db = this.writableDatabase
+        val result = db.delete(TBL_STUDENT, "$ID = ?", arrayOf(id.toString()))
+        db.close()
+        return result
+    }
+
+
+    fun getAllStudent(): ArrayList<StudentModel> {
+        val stdList: ArrayList<StudentModel> = ArrayList()
+        val sqlQuery = "SELECT * FROM $TBL_STUDENT"
+        val db = this.readableDatabase
+
+        try {
+            val cursor = db.rawQuery(sqlQuery, null)
+            if (cursor.moveToFirst()) {
+                do {
+                    val id    = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                    val name  = cursor.getString(cursor.getColumnIndexOrThrow("name"))
+                    val email = cursor.getString(cursor.getColumnIndexOrThrow("email"))
+                    stdList.add(StudentModel(id = id, name = name, email = email))
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        db.close()
+        return stdList
+    }
+    // ✅ NUEVO: actualiza nombre y email de un estudiante por su id
+    fun updateStudent(std: StudentModel): Int {
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(NAME, std.name)
+        contentValues.put(EMAIL, std.email)
+        // WHERE id = ?
+        val result = db.update(TBL_STUDENT, contentValues, "$ID = ?", arrayOf(std.id.toString()))
+        db.close()
+        return result
+    }
+}

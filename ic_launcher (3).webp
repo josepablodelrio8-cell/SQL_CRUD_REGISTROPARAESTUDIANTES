@@ -1,0 +1,81 @@
+package com.example.app05crud
+
+import android.app.AlertDialog
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+
+// Adapter personalizado para mostrar cada estudiante con su boton eliminar Y modificar
+class StudentAdapter(
+    context: Context,
+    private var stdList: ArrayList<StudentModel>,
+    private val onDelete: (StudentModel) -> Unit,
+    // ✅ NUEVO: callback que se dispara cuando el usuario confirma la edición
+    private val onUpdate: (StudentModel) -> Unit
+) : ArrayAdapter<StudentModel>(context, 0, stdList) {
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val view = convertView ?: LayoutInflater.from(context)
+            .inflate(R.layout.card_items_std, parent, false)
+
+        val tvItem    = view.findViewById<TextView>(R.id.tvItem)
+        val tvSubItem = view.findViewById<TextView>(R.id.tvSubItem)
+        val tvAvatar  = view.findViewById<TextView>(R.id.tvAvatar)  // ✅ avatar
+        val btnDelete = view.findViewById<Button>(R.id.btnEliminar)
+        val btnEdit   = view.findViewById<Button>(R.id.btnModificar)
+
+        val std = stdList[position]
+
+        // ✅ Toma las primeras letras de cada palabra del nombre (máx 2)
+        // Ejemplo: "Ana García" → "AG" | "Carlos" → "C"
+        val initials = std.name
+            .trim()
+            .split(" ")
+            .filter { it.isNotEmpty() }
+            .take(2)
+            .joinToString("") { it.first().uppercaseChar().toString() }
+        tvAvatar.text = initials
+
+        tvItem.text    = "E ${position + 1}  |  ${std.name}"
+        tvSubItem.text = std.email
+
+        btnDelete.setOnClickListener { onDelete(std) }
+        btnEdit.setOnClickListener   { showEditDialog(std) }
+
+        return view
+    }
+
+    // ✅ NUEVO: construye y muestra un AlertDialog con dos EditText para editar nombre y email
+    private fun showEditDialog(std: StudentModel) {
+        // Inflamos una vista con dos campos de texto
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_student, null)
+        val etName  = dialogView.findViewById<EditText>(R.id.etEditName)
+        val etEmail = dialogView.findViewById<EditText>(R.id.etEditEmail)
+
+        // Precargamos los valores actuales del estudiante
+        etName.setText(std.name)
+        etEmail.setText(std.email)
+
+        AlertDialog.Builder(context)
+            .setTitle("Modificar estudiante")
+            .setView(dialogView)
+            .setPositiveButton("Guardar") { _, _ ->
+                val newName  = etName.text.toString().trim()
+                val newEmail = etEmail.text.toString().trim()
+
+                // Solo actualizamos si los campos no están vacíos
+                if (newName.isNotEmpty() && newEmail.isNotEmpty()) {
+                    // Creamos un StudentModel con los datos nuevos pero el mismo id
+                    val updatedStd = StudentModel(id = std.id, name = newName, email = newEmail)
+                    onUpdate(updatedStd)   // dispara el callback en MainActivity
+                }
+            }
+            .setNegativeButton("Cancelar", null)  // cierra el diálogo sin hacer nada
+            .show()
+    }
+}
